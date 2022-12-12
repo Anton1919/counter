@@ -11,17 +11,9 @@ function App() {
 	const [isIncrement, setIsIncrement] = useState<boolean>(false)
 	const [error, setError] = useState<string | null>(null)
 
-	// const classError = () => {
-	// 	const error = max === start && max !== 0 && start !== 0 || max < 0 || start < 0 || max < start
-	// 	if (error)
-	// 		setError(true)
-	// }
 
+	const conditionErrorMessage = max === start && max !== 0 && start !== 0 || max < 0 || start < 0 || max < start
 
-	//Below useEffect for the MAXIMUM value:
-	// useEffect(() => {
-	// 	localStorage.setItem("maxValue", JSON.stringify(max))
-	// }, [max])
 
 	useEffect(() => {
 		let maxValueAsString = localStorage.getItem("maxValue")
@@ -37,18 +29,6 @@ function App() {
 		}
 	}, [])
 
-	//Below useEffect for the START value:
-	// useEffect(() => {
-	// 	localStorage.setItem("startValue", JSON.stringify(start))
-	// }, [start])
-
-	// useEffect(() => {
-	// 	let getValue = localStorage.getItem("startValue")
-	// 	if (getValue) {
-	// 		let newValue = JSON.parse(getValue)
-	// 		setStart(newValue)
-	// 	}
-	// }, [])
 
 	// Below buttons logic:
 
@@ -69,23 +49,32 @@ function App() {
 	}
 	/////////////////////////////////////////
 
+
 	const onChangeMax = (e: ChangeEvent<HTMLInputElement>) => {
 		setMax(Number(e.currentTarget.value))
 		setIsIncrement(true)
-		if (+e.currentTarget.value < 0) {
-			setError('Значение не должно быть меньше 0')
+		if (+e.currentTarget.value <= start || +e.currentTarget.value < 0) {
+			setError('Incorrect message!')
+		} else {
+			setError(null)
 		}
+
 	}
 
 	const onChangeStart = (e: ChangeEvent<HTMLInputElement>) => {
 		setStart(Number(e.currentTarget.value))
 		setIsIncrement(true)
+		if (+e.currentTarget.value >= max || +e.currentTarget.value < 0) {
+			setError('Incorrect message!')
+		} else {
+			setError(null)
+		}
 	}
 
 	return (
 		<div className="App">
 			<Counter
-				// error={error}
+				error={error}
 				isIncrement={isIncrement}
 				max={max}
 				value={value}
@@ -94,7 +83,7 @@ function App() {
 			/>
 
 			<SettingCounter
-				// error={error}
+				error={error}
 				max={max}
 				start={start}
 				onChangeMax={onChangeMax}

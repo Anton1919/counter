@@ -10,9 +10,10 @@ type SettingCounterType = {
 	onChangeStart: (e: ChangeEvent<HTMLInputElement>) => void
 	handleClick: () => void
 	isIncrement: boolean
+	error: string | null
 }
 
-const SettingCounter = ({handleClick, isIncrement, max, start, onChangeMax, onChangeStart}: SettingCounterType) => {
+const SettingCounter = ({handleClick, error ,isIncrement, max, start, onChangeMax, onChangeStart}: SettingCounterType) => {
 
 	return (
 		<div className={s.settingCounter}>
@@ -23,7 +24,7 @@ const SettingCounter = ({handleClick, isIncrement, max, start, onChangeMax, onCh
 				onChangeStart={onChangeStart}
 				isIncrement={isIncrement}
 			/>
-			<Button callback={handleClick} isIncrement={isIncrement}/>
+			<Button callback={handleClick} disabled={!!error} error={error} isIncrement={isIncrement}/>
 		</div>
 	);
 };
